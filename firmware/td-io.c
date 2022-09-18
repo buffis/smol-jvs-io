@@ -1,3 +1,5 @@
+// Adapted from the https://github.com/tdaede/td-io firmware but scoped down.
+
 #include <stdio.h>
 #include "pico/stdlib.h"
 #include "hardware/adc.h"
@@ -6,28 +8,30 @@
 const uint PIN_JVS_RE = 2;
 const uint PIN_JVS_DE = 3;
 
-const uint PIN_JVS_SENSE_2_5V = 14;
 const uint PIN_JVS_SENSE_0V = 13;
 
-const uint PIN_JVS_TERMINATION = 15;
-const uint PIN_JVS_SENSE_IN_HIGH = 11;
-const uint PIN_JVS_SENSE_IN_LOW = 12;
-
-const uint PIN_SR_DATA = 20;
-const uint PIN_SR_CLK = 18;
-const uint PIN_SR_SH = 21;
-
-const uint PIN_METER1 = 8;
-const uint PIN_METER2 = 7;
-const uint PIN_LOCKOUT1 = 10;
-const uint PIN_LOCKOUT2 = 9;
+const uint PIN_JVS_TERMINATION = 15; // TODO: Remove.
 
 const uint PIN_LED_ENUMERATED = PICO_DEFAULT_LED_PIN;
-const uint PIN_DIP1 = 17;
-const uint PIN_DIP2 = 16;
+const uint PIN_DIP1 = 11;
+const uint PIN_DIP2 = 12;
+const uint PIN_DIP3 = 15;
 
-const uint16_t JVS_TERMINATION_THRESHOLD = (uint16_t)(3.75/2.0/3.3*4096);
-const uint16_t JVS_0V_THRESHOLD = (uint16_t)(1.25/2.0/3.3*4096);
+// New pins for direct inputs.
+const uint PIN_BTN_TEST = 10;
+const uint PIN_BTN_SERVICE = 14;
+const uint PIN_BTN_COIN = 27;
+const uint PIN_BTN_START = 28;
+const uint PIN_JOY_UP = 6;
+const uint PIN_JOY_DOWN = 7;
+const uint PIN_JOY_LEFT = 8;
+const uint PIN_JOY_RIGHT = 9;
+const uint PIN_BTN_1 = 17;
+const uint PIN_BTN_2 = 18;
+const uint PIN_BTN_3 = 19;
+const uint PIN_BTN_4 = 20;
+const uint PIN_BTN_5 = 21;
+const uint PIN_BTN_6 = 22;
 
 const uint8_t JVS_STATUS_GOOD = 1;
 const uint8_t JVS_STATUS_UNKNOWN_COMMAND = 2;
@@ -77,7 +81,7 @@ uint8_t prev_coin_p2 = 0;
 #define SR_TILT 29
 
 const uint8_t JVS_COMM_VER = 0x10;
-const char id_str[] = "TD;TD-IO;v1.1;https://github.com/tdaede/td-io";
+const char id_str[] = "BUFFI;BuffiJVS;v0.1;https://github.com/buffis";
 
 const uint8_t input_desc_1coin[] = {
     0x01, 2, 12, 0,
@@ -148,27 +152,22 @@ void send_message(uint8_t status, uint8_t* m, uint8_t msg_len) {
 }
 
 uint32_t read_switches() {
-    uint32_t r;
-    gpio_put(PIN_SR_SH, 1);
-    busy_wait_us(1);
-    for (int i = 0; i < 32; i++) {
-        r >>= 1;
-        r |= (gpio_get(PIN_SR_DATA) ? 1 : 0) << 31;
-        gpio_put(PIN_SR_CLK, 1);
-        busy_wait_us(1);
-        gpio_put(PIN_SR_CLK, 0);
-        busy_wait_us(1);
-    }
-    gpio_put(PIN_SR_SH, 0);
-    return ~r;
-}
-
-void update_termination() {
-    if (gpio_get(PIN_JVS_SENSE_IN_HIGH)) {
-        gpio_put(PIN_JVS_TERMINATION, 0);
-    } else {
-        gpio_put(PIN_JVS_TERMINATION, 1);
-    }
+    uint32_t switches = 0;
+    switches |= (!gpio_get(PIN_BTN_TEST)) << SR_TEST;
+    switches |= (!gpio_get(PIN_BTN_COIN)) << SR_C1;
+    switches |= (!gpio_get(PIN_BTN_SERVICE)) << SR_SERVICE;
+    switches |= (!gpio_get(PIN_BTN_START)) << SR_P1_START;
+    switches |= (!gpio_get(PIN_JOY_UP)) << SR_P1_UP;
+    switches |= (!gpio_get(PIN_JOY_DOWN)) << SR_P1_DOWN;
+    switches |= (!gpio_get(PIN_JOY_LEFT)) << SR_P1_LEFT;
+    switches |= (!gpio_get(PIN_JOY_RIGHT)) << SR_P1_RIGHT;
+    switches |= (!gpio_get(PIN_BTN_1)) << SR_P1_1;
+    switches |= (!gpio_get(PIN_BTN_2)) << SR_P1_2;
+    switches |= (!gpio_get(PIN_BTN_3)) << SR_P1_3;
+    switches |= (!gpio_get(PIN_BTN_4)) << SR_P1_4;
+    switches |= (!gpio_get(PIN_BTN_5)) << SR_P1_5;
+    switches |= (!gpio_get(PIN_BTN_6)) << SR_P1_6;
+    return switches;
 }
 
 // call periodically with switch read to check level changes of coin input
@@ -187,10 +186,6 @@ void process_coin(uint32_t switches) {
     }
     prev_coin_p1 = switches >> SR_C1 & 1;
     prev_coin_p2 = switches >> SR_C2 & 1;
-    gpio_put(PIN_METER1, prev_coin_p1);
-    gpio_put(PIN_METER2, prev_coin_p2);
-    gpio_put(PIN_LOCKOUT1, coin_count_p1 >= 16383);
-    gpio_put(PIN_LOCKOUT2, coin_count_p2 >= 16383);
 }
 
 int main() {
@@ -205,45 +200,12 @@ int main() {
     gpio_init(PIN_JVS_DE);
     gpio_put(PIN_JVS_DE, 0); //disable transmitter
     gpio_set_dir(PIN_JVS_DE, GPIO_OUT);
-    gpio_init(PIN_JVS_SENSE_2_5V);
-    gpio_put(PIN_JVS_SENSE_2_5V, 1); // always appear present
-    gpio_set_dir(PIN_JVS_SENSE_2_5V, GPIO_OUT);
     gpio_init(PIN_JVS_SENSE_0V);
     gpio_put(PIN_JVS_SENSE_0V, 0);
     gpio_set_dir(PIN_JVS_SENSE_0V, GPIO_OUT);
     gpio_init(PIN_JVS_TERMINATION);
     gpio_put(PIN_JVS_TERMINATION, 1); // disable termination by default
     gpio_set_dir(PIN_JVS_TERMINATION, GPIO_OUT);
-    gpio_init(PIN_JVS_SENSE_IN_LOW);
-    gpio_set_dir(PIN_JVS_SENSE_IN_LOW, GPIO_IN);
-    gpio_pull_up(PIN_JVS_SENSE_IN_LOW);
-    gpio_init(PIN_JVS_SENSE_IN_HIGH);
-    gpio_set_dir(PIN_JVS_SENSE_IN_HIGH, GPIO_IN);
-    gpio_pull_up(PIN_JVS_SENSE_IN_HIGH);
-
-    // sr
-    gpio_init(PIN_SR_DATA);
-    gpio_set_dir(PIN_SR_DATA, GPIO_IN);
-    gpio_init(PIN_SR_CLK);
-    gpio_put(PIN_SR_CLK, 0);
-    gpio_set_dir(PIN_SR_CLK, GPIO_OUT);
-    gpio_init(PIN_SR_SH);
-    gpio_put(PIN_SR_SH, 0);
-    gpio_set_dir(PIN_SR_SH, GPIO_OUT);
-
-    // coin/lockout drivers
-    gpio_init(PIN_METER1);
-    gpio_put(PIN_METER1, 0);
-    gpio_set_dir(PIN_METER1, GPIO_OUT);
-    gpio_init(PIN_METER2);
-    gpio_put(PIN_METER2, 0);
-    gpio_set_dir(PIN_METER2, GPIO_OUT);
-    gpio_init(PIN_LOCKOUT1);
-    gpio_put(PIN_LOCKOUT1, 0);
-    gpio_set_dir(PIN_LOCKOUT1, GPIO_OUT);
-    gpio_init(PIN_LOCKOUT2);
-    gpio_put(PIN_LOCKOUT2, 0);
-    gpio_set_dir(PIN_LOCKOUT2, GPIO_OUT);
 
     // ui
     gpio_init(PIN_LED_ENUMERATED);
@@ -253,7 +215,51 @@ int main() {
     gpio_set_dir(PIN_DIP1, GPIO_IN);
     gpio_pull_up(PIN_DIP1);
 
-    update_termination();
+    // Control inputs
+    gpio_init(PIN_BTN_TEST);
+    gpio_init(PIN_BTN_SERVICE);
+    gpio_init(PIN_BTN_COIN);
+    gpio_init(PIN_BTN_START);
+    gpio_init(PIN_JOY_UP);
+    gpio_init(PIN_JOY_DOWN);
+    gpio_init(PIN_JOY_LEFT);
+    gpio_init(PIN_JOY_RIGHT);
+    gpio_init(PIN_BTN_1);
+    gpio_init(PIN_BTN_2);
+    gpio_init(PIN_BTN_3);
+    gpio_init(PIN_BTN_4);
+    gpio_init(PIN_BTN_5);
+    gpio_init(PIN_BTN_6);
+    gpio_set_dir(PIN_BTN_TEST, GPIO_IN);
+    gpio_set_dir(PIN_BTN_SERVICE, GPIO_IN);
+    gpio_set_dir(PIN_BTN_COIN, GPIO_IN);
+    gpio_set_dir(PIN_BTN_START, GPIO_IN);
+    gpio_set_dir(PIN_JOY_UP, GPIO_IN);
+    gpio_set_dir(PIN_JOY_DOWN, GPIO_IN);
+    gpio_set_dir(PIN_JOY_LEFT, GPIO_IN);
+    gpio_set_dir(PIN_JOY_RIGHT, GPIO_IN);
+    gpio_set_dir(PIN_BTN_1, GPIO_IN);
+    gpio_set_dir(PIN_BTN_2, GPIO_IN);
+    gpio_set_dir(PIN_BTN_3, GPIO_IN);
+    gpio_set_dir(PIN_BTN_4, GPIO_IN);
+    gpio_set_dir(PIN_BTN_5, GPIO_IN);
+    gpio_set_dir(PIN_BTN_6, GPIO_IN);
+    gpio_pull_up(PIN_BTN_TEST);
+    gpio_pull_up(PIN_BTN_SERVICE);
+    gpio_pull_up(PIN_BTN_COIN);
+    gpio_pull_up(PIN_BTN_START);
+    gpio_pull_up(PIN_JOY_UP);
+    gpio_pull_up(PIN_JOY_DOWN);
+    gpio_pull_up(PIN_JOY_LEFT);
+    gpio_pull_up(PIN_JOY_RIGHT);
+    gpio_pull_up(PIN_BTN_1);
+    gpio_pull_up(PIN_BTN_2);
+    gpio_pull_up(PIN_BTN_3);
+    gpio_pull_up(PIN_BTN_4);
+    gpio_pull_up(PIN_BTN_5);
+    gpio_pull_up(PIN_BTN_6);
+
+    gpio_put(PIN_JVS_TERMINATION, 0);
 
     while (true) {
         const uint64_t now = time_us_64();
@@ -296,9 +302,7 @@ int main() {
                         uint8_t node_id = message[i+1];
                         i += 2;
                         printf("Assign node id N: %02x\n", node_id);
-                        if ((our_address == 0)
-                            && (gpio_get(PIN_JVS_SENSE_IN_HIGH)
-                                || !gpio_get(PIN_JVS_SENSE_IN_LOW))) {
+                        if (our_address == 0) {
                             printf("Assigning our address\n");
                             our_address = node_id;
                             msg_send[o] = JVS_REPORT_GOOD;
@@ -375,8 +379,8 @@ int main() {
                             process_coin(switches);
                             last_process_coin = now;
                         }
-                        msg_send[o] = ((switches >> SR_TEST) & 1) << 7
-                            | ((switches >> SR_TILT) & 1) << 7;
+                        // Cool stuff here.
+                        msg_send[o] = !gpio_get(PIN_BTN_TEST) << 7;
                         o++;
                         //printf("Got switch request for %02x players\n", num_players);
                         for (int player = 0; player < num_players; player++) {
@@ -514,10 +518,6 @@ int main() {
                 status = JVS_STATUS_CHECKSUM_ERROR;
                 send_message(status, msg_send, 0);
             }
-        } else {
-            // note because of disabling the rx, we always read a 00 byte after sending here
-            update_termination(); // convenient time to read adc
-            //printf("Saw non-sync code %02x\n", sync);
         }
     }
     return 0;
