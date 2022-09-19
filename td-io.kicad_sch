@@ -3043,7 +3043,7 @@
     (property "Reference" "J6" (id 0) (at 330.2 245.1099 90)
       (effects (font (size 1.27 1.27)) (justify right))
     )
-    (property "Value" "Control IO" (id 1) (at 349.25 246.38 90)
+    (property "Value" "Controls" (id 1) (at 349.25 246.38 90)
       (effects (font (size 1.27 1.27)) (justify right))
     )
     (property "Footprint" "Connector_PinHeader_2.54mm:PinHeader_2x10_P2.54mm_Vertical" (id 2) (at 345.44 245.11 0)
@@ -3588,7 +3588,7 @@
       (reference "J5") (unit 1) (value "Power") (footprint "Connector_PinHeader_2.54mm:PinHeader_1x02_P2.54mm_Vertical")
     )
     (path "/51cf508d-59ed-43ac-92da-b1be242395a6"
-      (reference "J6") (unit 1) (value "Control IO") (footprint "Connector_PinHeader_2.54mm:PinHeader_2x10_P2.54mm_Vertical")
+      (reference "J6") (unit 1) (value "Controls") (footprint "Connector_PinHeader_2.54mm:PinHeader_2x10_P2.54mm_Vertical")
     )
     (path "/00000000-0000-0000-0000-000060ff630d"
       (reference "Q1") (unit 1) (value "AO4818B") (footprint "Package_SO:SOIC-8_3.9x4.9mm_P1.27mm")

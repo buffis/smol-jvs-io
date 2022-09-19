@@ -982,7 +982,7 @@
       (effects (font (size 1 1) (thickness 0.15)))
       (tstamp 441065f2-759f-4c6b-800b-b55ac4560afb)
     )
-    (fp_text value "Control IO" (at 4.865 11.54 90) (layer "F.SilkS")
+    (fp_text value "Controls" (at 4.865 11.54 90) (layer "F.SilkS")
       (effects (font (size 1 1) (thickness 0.15)))
       (tstamp 77f5d2a1-2e9e-4732-81e1-801ab13cabce)
     )
