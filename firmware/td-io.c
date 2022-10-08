@@ -81,7 +81,7 @@ uint8_t prev_coin_p2 = 0;
 #define SR_TILT 29
 
 const uint8_t JVS_COMM_VER = 0x10;
-const char id_str[] = "BUFFI;BuffiJVS;v0.1;https://github.com/buffis";
+const char id_str[] = "BUFFI;smol-jvs;v1.0;https://github.com/buffis";
 
 const uint8_t input_desc_1coin[] = {
     0x01, 2, 12, 0,
