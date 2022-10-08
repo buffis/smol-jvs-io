@@ -2,7 +2,9 @@
 
 Smol JVS IO is a scoped down JVS I/O board designed to work as a drop-in replacement for arcade stick PCB's, to allow them to interface with JVS hardware. It is not meant to function as a fully functional JVS IO in terms of functionality.
 
-This hardware and software of this board is forked from [td-io](https://github.com/tdaede/td-io) and then heavily scoped down to fit my needs. The td-io firmware is not directly compatible, due to design shortcuts on this board such as removing the shift registers.
+This hardware and software of this board was forked from [td-io](https://github.com/tdaede/td-io) and then heavily scoped down to fit my needs. The td-io firmware is not directly compatible, due to design shortcuts on this board such as removing the shift registers.
+
+At this point, I suppose not much of the td-io hardware schematic is used here any more. The firmware is still a pretty close fork though.
 
 # Features
 
