@@ -2568,7 +2568,7 @@
   (symbol (lib_id "Diode:BAV99S") (at 265.684 242.062 0) (unit 2)
     (in_bom yes) (on_board yes) (fields_autoplaced)
     (uuid 3e6eed0e-55d3-494a-8d3d-99c26e038df5)
-    (property "Reference" "D?" (id 0) (at 266.954 234.95 0))
+    (property "Reference" "D1" (id 0) (at 266.954 234.95 0))
     (property "Value" "BAV99S" (id 1) (at 266.954 237.49 0))
     (property "Footprint" "Package_TO_SOT_SMD:SOT-363_SC-70-6" (id 2) (at 265.684 254.762 0)
       (effects (font (size 1.27 1.27)) hide)
@@ -2685,7 +2685,7 @@
   (symbol (lib_id "Diode:BAV99S") (at 248.412 242.062 0) (unit 1)
     (in_bom yes) (on_board yes) (fields_autoplaced)
     (uuid 728798fa-9d6f-4377-acf9-c914beeba9dd)
-    (property "Reference" "D?" (id 0) (at 249.682 234.95 0))
+    (property "Reference" "D1" (id 0) (at 249.682 234.95 0))
     (property "Value" "BAV99S" (id 1) (at 249.682 237.49 0))
     (property "Footprint" "Package_TO_SOT_SMD:SOT-363_SC-70-6" (id 2) (at 248.412 254.762 0)
       (effects (font (size 1.27 1.27)) hide)
@@ -2783,7 +2783,7 @@
   (symbol (lib_name "GND_6") (lib_id "power:GND") (at 274.32 243.078 0) (unit 1)
     (in_bom yes) (on_board yes)
     (uuid 8f9f0312-a6da-44a7-9598-9e2034eb733d)
-    (property "Reference" "#PWR?" (id 0) (at 274.32 249.428 0)
+    (property "Reference" "#PWR0101" (id 0) (at 274.32 249.428 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "GND" (id 1) (at 274.447 247.4722 0))
@@ -3141,13 +3141,13 @@
       (reference "#PWR020") (unit 1) (value "+3.3V") (footprint "")
     )
     (path "/8f9f0312-a6da-44a7-9598-9e2034eb733d"
-      (reference "#PWR?") (unit 1) (value "GND") (footprint "")
+      (reference "#PWR0101") (unit 1) (value "GND") (footprint "")
     )
     (path "/728798fa-9d6f-4377-acf9-c914beeba9dd"
-      (reference "D?") (unit 1) (value "BAV99S") (footprint "Package_TO_SOT_SMD:SOT-363_SC-70-6")
+      (reference "D1") (unit 1) (value "BAV99S") (footprint "Package_TO_SOT_SMD:SOT-363_SC-70-6")
     )
     (path "/3e6eed0e-55d3-494a-8d3d-99c26e038df5"
-      (reference "D?") (unit 2) (value "BAV99S") (footprint "Package_TO_SOT_SMD:SOT-363_SC-70-6")
+      (reference "D1") (unit 2) (value "BAV99S") (footprint "Package_TO_SOT_SMD:SOT-363_SC-70-6")
     )
     (path "/c6a072ba-7c6b-465b-bddf-f0c399477da0"
       (reference "H1") (unit 1) (value "MountingHole_Pad") (footprint "MountingHole:MountingHole_2.5mm_Pad")
