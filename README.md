@@ -12,6 +12,22 @@ At this point, I suppose not much of the td-io hardware schematic is used here a
 * Brook board compatible 20pin connector for hooking up player 1 stick and buttons.
 * Upgradeable firmware
 
+# BOM
+
+Note that earlier versions may miss some of these, or have other component identifiers, but overall should be the same.
+
+- U1 ADM3485EARZ-REEL7 or ST3485EBDR (or some other pin compatible one)
+- U2 Raspberry Pi Pico
+- Q1 AO3400A (Or any similar mosfet)
+- D1 BAV99S,115 
+- R1 0805 120ohm
+- R2 0805 1k ohm
+- J1 USBR-B-S-F-O-TH (Digikey: SAM10873-ND)
+- J2 JST PH 1x4
+- J3 JST PH 1x4
+- J4 2.54mm Pinheader 2x10
+- J5 JST XH 1x2
+
 # Stuff intentionally not provided
 
 * Player 2 controls

@@ -1928,7 +1928,7 @@
   (no_connect (at 331.47 218.44) (uuid c6f06e39-cd08-4b72-9672-7e2636280cd7))
   (no_connect (at 351.79 213.36) (uuid f899e477-3dca-4167-a2a4-414885eb27a7))
   (no_connect (at 265.684 247.142) (uuid f8db3301-a6a9-4aaa-b3e8-eca0d888f61a))
-  (no_connect (at 248.412 247.142) (uuid f8db3301-a6a9-4aaa-b3e8-eca0d888f61a))
+  (no_connect (at 248.412 247.142) (uuid f8db3301-a6a9-4aaa-b3e8-eca0d888f61b))
 
   (wire (pts (xy 247.65 189.23) (xy 247.65 190.5))
     (stroke (width 0) (type default) (color 0 0 0 0))
@@ -2600,7 +2600,7 @@
   (symbol (lib_id "Connector_Generic:Conn_02x10_Odd_Even") (at 345.44 245.11 270) (unit 1)
     (in_bom yes) (on_board yes)
     (uuid 51cf508d-59ed-43ac-92da-b1be242395a6)
-    (property "Reference" "J6" (id 0) (at 330.2 245.1099 90)
+    (property "Reference" "J4" (id 0) (at 330.2 245.1099 90)
       (effects (font (size 1.27 1.27)) (justify right))
     )
     (property "Value" "Controls" (id 1) (at 349.25 246.38 90)
@@ -2929,7 +2929,7 @@
     (pin "16" (uuid 44ad8cf6-8dd2-4e85-8ec1-ce89487221ca))
     (pin "17" (uuid 9ae74a5a-35b8-41d1-b0bc-b0c268d80282))
     (pin "18" (uuid 11e176fb-bc04-4140-8925-a3615d5cfe8b))
-    (pin "19" (uuid 728798fa-9d6f-4377-acf9-c914beeba9dd))
+    (pin "19" (uuid 728798fa-9d6f-4377-acf9-c914beeba9de))
     (pin "2" (uuid 4d258566-b93d-4435-b888-c52c8b6a2fae))
     (pin "20" (uuid 38969f7b-7857-4c9f-9a54-9c144f4387b2))
     (pin "21" (uuid 7ddeb906-24ff-4fa6-bc7a-ed8f7d9db43b))
@@ -2938,9 +2938,9 @@
     (pin "24" (uuid 409bf8c7-21da-4798-8a78-c6aa7bc71315))
     (pin "25" (uuid 57ae5647-0796-4ac6-bcfb-5c6815dbd65b))
     (pin "26" (uuid 95fc8353-65f9-4e47-8dc2-21e6681cd87d))
-    (pin "27" (uuid 5e63b868-252d-4750-aa33-b9a59444f4ac))
-    (pin "28" (uuid c34150b4-5ec5-49c6-985a-1618cc0afb82))
-    (pin "29" (uuid deeba859-c930-4a16-bb4d-94b435567fd8))
+    (pin "27" (uuid 5e63b868-252d-4750-aa33-b9a59444f4ad))
+    (pin "28" (uuid c34150b4-5ec5-49c6-985a-1618cc0afb83))
+    (pin "29" (uuid deeba859-c930-4a16-bb4d-94b435567fd9))
     (pin "3" (uuid c91e9575-f433-4055-8bf6-569be8c9a305))
     (pin "30" (uuid fadacf35-70b8-4109-819f-2a897b70351f))
     (pin "31" (uuid 96ede766-efaa-43c3-b151-5250994a7ddc))
@@ -3170,11 +3170,11 @@
     (path "/a0b53c04-2965-4110-803a-90c53a47dee8"
       (reference "J3") (unit 1) (value "Dips") (footprint "Connector_JST:JST_PH_B4B-PH-K_1x04_P2.00mm_Vertical")
     )
+    (path "/51cf508d-59ed-43ac-92da-b1be242395a6"
+      (reference "J4") (unit 1) (value "Controls") (footprint "Connector_PinHeader_2.54mm:PinHeader_2x10_P2.54mm_Vertical")
+    )
     (path "/c15c7b62-76a6-4348-946e-69a759a4b8e4"
       (reference "J5") (unit 1) (value "Power") (footprint "Connector_JST:JST_XH_B2B-XH-AM_1x02_P2.50mm_Vertical")
-    )
-    (path "/51cf508d-59ed-43ac-92da-b1be242395a6"
-      (reference "J6") (unit 1) (value "Controls") (footprint "Connector_PinHeader_2.54mm:PinHeader_2x10_P2.54mm_Vertical")
     )
     (path "/ae234909-6ebd-433f-aff9-a3ee2e1deb62"
       (reference "Q1") (unit 1) (value "AO3400A") (footprint "Package_TO_SOT_SMD:SOT-23")
